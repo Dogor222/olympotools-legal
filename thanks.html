@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex"><meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-sRDk5SSMsPeG5c9xW3in5gXGbspfa7ULOBsFPmObZUY='; style-src 'unsafe-inline'; connect-src https://api.polar.sh; img-src 'self'; base-uri 'none'; form-action 'none'">
+<title>OlympoTools</title>
+<style>
+:root{--ink:#172033;--muted:#5d6779;--line:#dfe4eb;--bg:#f2f4f7;--card:#fff;--accent:#0e7c66;--ok:#0e7c66}
+@media (prefers-color-scheme:dark){:root{--ink:#e8ecf3;--muted:#9aa5b7;--line:#273142;--bg:#0e131b;--card:#151b25;--ok:#4fd1ae}}
+*{box-sizing:border-box}body{margin:0;font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:620px;margin:0 auto;padding:48px 16px 64px}
+h1{font-size:28px;line-height:1.15;letter-spacing:-.02em;margin:0 0 20px}
+h2{font-size:17px;margin:0 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px}
+.status{font-size:19px;font-weight:600;margin:0 0 6px}.status.ok{color:var(--ok)}.status.ok::before{content:"\2713  "}
+.status.busy::after{content:"";display:inline-block;width:14px;height:14px;margin-left:10px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.muted{color:var(--muted);margin:0}.small{font-size:14px}
+.keycard:not(.open) h2{font-size:14px;color:var(--muted);font-weight:600}
+.keyrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.keyrow code{flex:1 1 280px;min-width:0;overflow-wrap:anywhere;font:14px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.btn{appearance:none;font:inherit;font-weight:600;border-radius:10px;padding:9px 16px;border:1px solid var(--line);background:var(--card);color:inherit;cursor:pointer;text-decoration:none;display:inline-block}
+a{color:#0b5cad}@media (prefers-color-scheme:dark){a{color:#7ab4ff}}
+:focus-visible{outline:2px solid #2f6fed;outline-offset:2px}
+</style></head>
+<body><main id="app"></main>
+<script>
+(function () {
+  'use strict';
+  var D = {"tools":{"cookies":{"name":{"en":"Cookie Editor & Profiles","es":"Editor de cookies y perfiles"},"accent":"#b45309"},"autorefresh":{"name":{"en":"Auto Refresh & Page Monitor","es":"Auto recarga y monitor web"},"accent":"#0e7c66"},"images":{"name":{"en":"Bulk Image Downloader","es":"Descargar imágenes en lote"},"accent":"#7c3aed"},"volume":{"name":{"en":"Volume Booster & Equalizer","es":"Subir volumen y ecualizador"},"accent":"#d22572"},"capture":{"name":{"en":"Full Page Screenshot & Annotate","es":"Captura de página completa"},"accent":"#2563eb"},"reader":{"name":{"en":"Read Aloud: Text to Speech","es":"Leer en voz alta: texto a voz"},"accent":"#c74b0a"},"tables":{"name":{"en":"Export Table to CSV & XLSX","es":"Exportar tabla a CSV y XLSX"},"accent":"#15803d"},"expander":{"name":{"en":"Text Snippets & Templates","es":"Expansor de texto y plantillas"},"accent":"#4f46e5"},"sessions":{"name":{"en":"Save & Restore Tab Sessions","es":"Guardar y restaurar pestañas"},"accent":"#077b97"}},"t":{"en":{"title":"Payment complete","thanks":"Thank you for your purchase!","working":"Turning on Pro in your extension…","active":"Pro is now active in %s.","activeAlready":"Pro was already active in %s.","activeHint":"You can close this tab and go back to what you were doing.","manualTitle":"One more step","manual":"Open the extension where you want Pro, click any Pro feature (or Settings › Account) and paste this key:","otherTool":"The extension open in this browser is a different tool from the one you bought. Install the tool you bought and paste this key there:","noExt":"We couldn’t find the extension in this browser. If you bought it for another browser or computer, paste this key in the extension there:","keyTitle":"Your license key","keyBackup":"Your license key (you won’t need it here)","copy":"Copy","copied":"Copied","loadingKey":"Loading your key…","noKey":"Your key is ready in “My purchases”. Sign in there with the e-mail you used to pay.","portal":"My purchases","noToken":"Thanks! If you just bought Pro, your extension turns it on by itself. You can always find your license key, invoices and subscription in “My purchases”.","help":"Need help? Write to","privacy":"This page stores nothing and uses no cookies or analytics."},"es":{"title":"Pago completado","thanks":"¡Gracias por tu compra!","working":"Activando Pro en tu extensión…","active":"Pro ya está activo en %s.","activeAlready":"Pro ya estaba activo en %s.","activeHint":"Puedes cerrar esta pestaña y seguir con lo que estabas haciendo.","manualTitle":"Un paso más","manual":"Abre la extensión donde quieres Pro, toca cualquier función Pro (o Ajustes › Cuenta) y pega esta clave:","otherTool":"La extensión que tienes en este navegador es otra herramienta, no la que compraste. Instala la que compraste y pega ahí esta clave:","noExt":"No encontramos la extensión en este navegador. Si la compraste para otro navegador o computador, pega esta clave en la extensión de allá:","keyTitle":"Tu clave de licencia","keyBackup":"Tu clave de licencia (aquí no la necesitas)","copy":"Copiar","copied":"Copiada","loadingKey":"Cargando tu clave…","noKey":"Tu clave está lista en «Mis compras». Entra ahí con el correo con el que pagaste.","portal":"Mis compras","noToken":"¡Gracias! Si acabas de comprar Pro, tu extensión lo activa sola. Tu clave de licencia, tus facturas y tu suscripción siempre están en «Mis compras».","help":"¿Necesitas ayuda? Escribe a","privacy":"Esta página no guarda nada ni usa cookies o analítica."}},"api":"https://api.polar.sh","org":"c2582ab1-7d1a-4723-a1e3-e44dff1db764","portal":"https://polar.sh/danrott/portal","mail":"olympospace@gmail.com","brand":"OlympoTools"};
+  var q = new URLSearchParams(location.search);
+  var token = q.get('customer_session_token') || '';
+  if (!/^[A-Za-z0-9_.~-]{20,400}$/.test(token)) token = '';
+  // Keep the one-time token out of the address bar and the history (the extensions already read it at document start).
+  if (location.search) { try { history.replaceState(null, '', location.pathname); } catch (_) {} }
+  var lang = (navigator.language || 'en').toLowerCase().indexOf('es') === 0 ? 'es' : 'en';
+  var t = D.t[lang];
+  document.documentElement.lang = lang;
+  document.title = t.title + (D.brand ? ' \u2013 ' + D.brand : '');
+  function el(tag, props, kids) {
+    var e = document.createElement(tag);
+    for (var k in (props || {})) {
+      if (k === 'text') e.textContent = props[k]; else if (k === 'on') e.addEventListener('click', props[k]); else e.setAttribute(k, props[k]);
+    }
+    (kids || []).forEach(function (c) { if (c) e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+    return e;
+  }
+  function nameOf(k) { return Object.prototype.hasOwnProperty.call(D.tools, k) ? D.tools[k].name[lang] : ''; }
+  function list(names) { return names.length < 2 ? names.join('') : names.slice(0, -1).join(', ') + (lang === 'es' ? ' y ' : ' and ') + names[names.length - 1]; }
+
+  var app = document.getElementById('app');
+  var status = el('p', { 'class': 'status', role: 'status', 'aria-live': 'polite' });
+  var hint = el('p', { 'class': 'muted' });
+  var keyBox = el('div', { 'class': 'keys' });
+  var keyHead = el('h2', { text: t.keyTitle });
+  var keyCard = el('div', { 'class': 'card keycard', hidden: 'hidden' }, [keyHead, el('p', { 'class': 'muted manual' }), keyBox]);
+  app.appendChild(el('h1', { text: t.thanks }));
+  app.appendChild(el('div', { 'class': 'card' }, [status, hint]));
+  app.appendChild(keyCard);
+  var foot = el('p', { 'class': 'small' });
+  if (D.portal) foot.appendChild(el('a', { href: D.portal, rel: 'noopener', 'class': 'btn', text: t.portal }));
+  app.appendChild(foot);
+  if (D.mail) app.appendChild(el('p', { 'class': 'small muted' }, [t.help + ' ', el('a', { href: 'mailto:' + D.mail, text: D.mail })]));
+  app.appendChild(el('p', { 'class': 'small muted', text: t.privacy }));
+
+  if (!token) { status.textContent = t.noToken; return; }
+  status.className = 'status busy';
+  status.textContent = t.working;
+
+  // ---- results from the extensions (core/pay-return.js), as JSON strings from this same page origin ----
+  var helpers = 0, done = 0, active = [], already = [], codes = [], settled = false;
+  window.addEventListener('message', function (ev) {
+    // Same page only. (Firefox can deliver content-script messages with a null source; the origin check still holds.)
+    if ((ev.source !== window && ev.source != null) || ev.origin !== location.origin || typeof ev.data !== 'string' || ev.data.length > 2000) return;
+    var m; try { m = JSON.parse(ev.data); } catch (_) { return; }
+    if (!m || m.olympo !== 'pro-return' || m.v !== 1) return;
+    if (m.stage === 'working') { helpers++; return; }
+    if (m.stage !== 'done' || !m.result) return;
+    done++;
+    var n = nameOf(m.result.tool);
+    if (m.result.ok && n) { (m.result.already ? already : active).push(n); }
+    else codes.push(String(m.result.code || ''));
+    render();
+  });
+  function render(final) {
+    if (active.length || already.length) {
+      settled = true;
+      status.className = 'status ok';
+      status.textContent = active.length ? t.active.replace('%s', list(active)) : t.activeAlready.replace('%s', list(already));
+      if (active.length && already.length) status.textContent += ' ' + t.activeAlready.replace('%s', list(already));
+      hint.textContent = t.activeHint;
+      keyHead.textContent = t.keyBackup;
+      keyCard.querySelector('.manual').textContent = '';
+      showKeys(false);
+      return;
+    }
+    if (helpers && done < helpers && !final) return;
+    if (!final && !helpers) return;
+    settled = true;
+    status.className = 'status';
+    status.textContent = t.manualTitle;
+    hint.textContent = '';
+    keyCard.querySelector('.manual').textContent = !helpers ? t.noExt : (codes.indexOf('other_tool') >= 0 ? t.otherTool : t.manual);
+    showKeys(true);
+  }
+  // No extension answered in a few seconds (bought for another browser), or one is stuck offline: offer the key.
+  setTimeout(function () { if (!settled && !helpers) render(true); }, 4000);
+  setTimeout(function () { if (!settled) render(true); }, 30000);
+
+  // ---- backup: the buyer's keys, read with the same token ----
+  var keysP = null;
+  function loadKeys() {
+    if (!keysP) {
+      keysP = fetch(D.api + '/v1/customer-portal/license-keys/?limit=100', {
+        headers: { authorization: 'Bearer ' + token, accept: 'application/json' }, credentials: 'omit', cache: 'no-store', redirect: 'error', referrerPolicy: 'no-referrer'
+      }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+        var out = [];
+        ((j && j.items) || []).forEach(function (it) {
+          if (!it || it.status !== 'granted' || typeof it.key !== 'string' || !/^[A-Z0-9 _-]{0,80}-?[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/.test(it.key)) return;
+          if (D.org && String(it.organization_id || '').toLowerCase() !== D.org) return;
+          out.push(it.key);
+        });
+        return out;
+      }).catch(function () { return []; });
+    }
+    return keysP;
+  }
+  loadKeys();
+  function showKeys(open) {
+    keyCard.hidden = false;
+    keyCard.className = 'card keycard' + (open ? ' open' : '');
+    keyBox.textContent = t.loadingKey;
+    loadKeys().then(function (keys) {
+      keyBox.textContent = '';
+      if (!keys.length) { keyBox.appendChild(el('p', { 'class': 'muted', text: t.noKey })); return; }
+      keys.forEach(function (k) {
+        var code = el('code', { text: k });
+        var b = el('button', { type: 'button', 'class': 'btn', text: t.copy });
+        b.addEventListener('click', function () {
+          var ok = function () { b.textContent = t.copied; setTimeout(function () { b.textContent = t.copy; }, 1800); };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(k).then(ok, function () {});
+        });
+        keyBox.appendChild(el('div', { 'class': 'keyrow' }, [code, b]));
+      });
+    });
+  }
+})();
+</script></body></html>

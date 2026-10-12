@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex"><meta name="referrer" content="no-referrer">
+<title>OlympoTools</title>
+<style>
+:root{--ink:#172033;--muted:#5d6779;--line:#dfe4eb;--bg:#f2f4f7;--card:#fff;--accent:#0e7c66}
+@media (prefers-color-scheme:dark){:root{--ink:#e8ecf3;--muted:#9aa5b7;--line:#273142;--bg:#0e131b;--card:#151b25}}
+*{box-sizing:border-box}body{margin:0;font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:620px;margin:0 auto;padding:48px 20px 64px}
+.head{display:flex;gap:14px;align-items:center;margin-bottom:22px}.head img{width:52px;height:52px;border-radius:14px}
+h1{font-size:28px;line-height:1.15;letter-spacing:-.02em;margin:0}.lead{color:var(--muted);margin:14px 0 22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+h2{font-size:17px;margin:0 0 12px}
+.reasons{display:flex;flex-direction:column;gap:8px}
+.reasons button{appearance:none;text-align:left;font:inherit;color:inherit;background:transparent;border:1px solid var(--line);border-radius:11px;padding:11px 14px;cursor:pointer}
+.reasons button:hover{border-color:var(--accent)}
+.reasons button[aria-pressed=true]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--card));font-weight:600}
+label{display:block;font-weight:600;font-size:14px;margin:16px 0 6px}
+textarea{width:100%;min-height:90px;font:inherit;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:11px;padding:10px 12px;resize:vertical}
+.actions{display:flex;gap:10px;align-items:center;margin-top:16px;flex-wrap:wrap}
+.btn{appearance:none;font:inherit;font-weight:600;border-radius:10px;padding:10px 18px;border:1px solid var(--line);background:var(--card);color:inherit;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.primary{background:var(--accent);border-color:transparent;color:#fff}.btn:disabled{opacity:.45;cursor:not-allowed}
+.done{font-weight:600}.small{font-size:13px;color:var(--muted)}
+.more{margin-top:28px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;margin-top:10px}
+.grid a{display:flex;gap:10px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:12px;color:inherit;text-decoration:none;background:var(--card);font-size:14px}
+.grid img{width:28px;height:28px;border-radius:8px}
+:focus-visible{outline:2px solid #2f6fed;outline-offset:2px}
+</style></head>
+<body><main id="app"></main>
+<iframe name="sink" title="" hidden></iframe>
+<script>
+(function () {
+  'use strict';
+  var D = {"tools":{"cookies":{"name":{"en":"Cookie Editor & Profiles","es":"Editor de cookies y perfiles"},"accent":"#b45309","icon":"cookies/icon.png","store":{"chrome":"","edge":"","firefox":""}},"autorefresh":{"name":{"en":"Auto Refresh & Page Monitor","es":"Auto recarga y monitor web"},"accent":"#0e7c66","icon":"autorefresh/icon.png","store":{"chrome":"","edge":"","firefox":""}},"images":{"name":{"en":"Bulk Image Downloader","es":"Descargar imágenes en lote"},"accent":"#7c3aed","icon":"images/icon.png","store":{"chrome":"","edge":"","firefox":""}},"volume":{"name":{"en":"Volume Booster & Equalizer","es":"Subir volumen y ecualizador"},"accent":"#d22572","icon":"volume/icon.png","store":{"chrome":"","edge":"","firefox":""}},"capture":{"name":{"en":"Full Page Screenshot & Annotate","es":"Captura de página completa"},"accent":"#2563eb","icon":"capture/icon.png","store":{"chrome":"","edge":"","firefox":""}},"reader":{"name":{"en":"Read Aloud: Text to Speech","es":"Leer en voz alta: texto a voz"},"accent":"#c74b0a","icon":"reader/icon.png","store":{"chrome":"","edge":"","firefox":""}},"tables":{"name":{"en":"Export Table to CSV & XLSX","es":"Exportar tabla a CSV y XLSX"},"accent":"#15803d","icon":"tables/icon.png","store":{"chrome":"","edge":"","firefox":""}},"expander":{"name":{"en":"Text Snippets & Templates","es":"Expansor de texto y plantillas"},"accent":"#4f46e5","icon":"expander/icon.png","store":{"chrome":"","edge":"","firefox":""}},"sessions":{"name":{"en":"Save & Restore Tab Sessions","es":"Guardar y restaurar pestañas"},"accent":"#077b97","icon":"sessions/icon.png","store":{"chrome":"","edge":"","firefox":""}},"unlock":{"name":{"en":"Enable Copy & Right Click","es":"Habilitar copiar y clic derecho"},"accent":"#475569","icon":"unlock/icon.png","store":{"chrome":"","edge":"","firefox":""}}},"reasons":[{"id":"not_working","en":"It didn’t work on the site I needed","es":"No funcionó en el sitio que necesitaba","hint":{"en":"Which site? What happened?","es":"¿En qué sitio? ¿Qué pasó?"}},{"id":"confusing","en":"It was hard to figure out","es":"Me costó entender cómo usarla","hint":{"en":"What was confusing?","es":"¿Qué fue lo confuso?"}},{"id":"missing","en":"It’s missing something I need","es":"Le falta algo que necesito","hint":{"en":"What would you need it to do?","es":"¿Qué necesitarías que hiciera?"}},{"id":"once","en":"I only needed it once","es":"Solo la necesitaba una vez","hint":{"en":"Anything we could improve?","es":"¿Algo que podamos mejorar?"}},{"id":"price","en":"The free version was too limited, or Pro costs too much","es":"La versión gratis se quedó corta o Pro es muy caro","hint":{"en":"What price or limit would work for you?","es":"¿Qué precio o límite te serviría?"}},{"id":"privacy","en":"I was worried about permissions or privacy","es":"Me preocuparon los permisos o la privacidad","hint":{"en":"Which permission worried you?","es":"¿Qué permiso te preocupó?"}},{"id":"switched","en":"I switched to another tool","es":"Me cambié a otra herramienta","hint":{"en":"Which one, and why?","es":"¿Cuál y por qué?"}},{"id":"other","en":"Something else","es":"Otra razón","hint":{"en":"Tell us in a few words","es":"Cuéntanos en pocas palabras"}}],"t":{"en":{"title":"Sorry to see you go","unknown":"one of our tools","lead":null,"q":"Why did you uninstall it?","detail":"Anything else? (optional)","send":"Send","sendMail":"Send by e-mail","sent":"Thank you. We read every answer.","sentMail":"Your e-mail app should open with the answer ready to send.","skip":"Skip","reinstall":"Reinstall","mistake":"Uninstalled by mistake?","more":"Other tools from","privacy":"This page stores nothing and uses no cookies or analytics. It only sends what you choose here, together with the tool name and version."},"es":{"title":"Lamentamos que te vayas","unknown":"una de nuestras herramientas","lead":null,"q":"¿Por qué la desinstalaste?","detail":"¿Algo más? (opcional)","send":"Enviar","sendMail":"Enviar por correo","sent":"Gracias. Leemos cada respuesta.","sentMail":"Tu aplicación de correo debería abrirse con la respuesta lista para enviar.","skip":"Omitir","reinstall":"Reinstalar","mistake":"¿La desinstalaste por error?","more":"Otras herramientas de","privacy":"Esta página no guarda nada ni usa cookies o analítica. Solo envía lo que elijas aquí, junto con el nombre y la versión de la herramienta."}},"mail":"olympospace@gmail.com","brand":"OlympoTools","action":"","fields":{}};
+  var q = new URLSearchParams(location.search);
+  var key = q.get('ext');
+  var tool = Object.prototype.hasOwnProperty.call(D.tools, key) ? D.tools[key] : null;
+  if (!tool) key = '';
+  var lang = (q.get('l') || navigator.language || 'en').toLowerCase().indexOf('es') === 0 ? 'es' : 'en';
+  var ver = /^\d{1,4}(\.\d{1,5}){1,3}$/.test(q.get('v') || '') ? q.get('v') : '';
+  var t = D.t[lang];
+  document.documentElement.lang = lang;
+  if (tool) document.documentElement.style.setProperty('--accent', tool.accent);
+  function el(tag, props, kids) {
+    var e = document.createElement(tag);
+    for (var k in (props || {})) {
+      if (k === 'text') e.textContent = props[k]; else if (k === 'on') e.addEventListener('click', props[k]); else e.setAttribute(k, props[k]);
+    }
+    (kids || []).forEach(function (c) { if (c) e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+    return e;
+  }
+  function safeHttps(u) { try { var x = new URL(u); return x.protocol === 'https:' ? x.href : ''; } catch (_) { return ''; } }
+  var name = tool ? tool.name[lang] : t.unknown;
+  var app = document.getElementById('app');
+  document.title = t.title + (D.brand ? ' \u2013 ' + D.brand : '');
+  app.appendChild(el('div', { 'class': 'head' }, [tool ? el('img', { src: tool.icon, alt: '' }) : null, el('h1', { text: t.title })]));
+  var leads = { en: 'You uninstalled %s. One quick question helps us make it better for everyone:', es: 'Desinstalaste %s. Una pregunta rápida nos ayuda a mejorarla para todos:' };
+  app.appendChild(el('p', { 'class': 'lead', text: leads[lang].replace('%s', name) }));
+  var chosen = null;
+  var detail = el('textarea', { id: 'detail', maxlength: '1000' });
+  var detailLabel = el('label', { 'for': 'detail', text: t.detail });
+  var status = el('p', { 'class': 'done', role: 'status', 'aria-live': 'polite' });
+  var send = el('button', { 'class': 'btn primary', type: 'button', disabled: 'disabled', text: D.action ? t.send : t.sendMail });
+  var list = el('div', { 'class': 'reasons', role: 'group', 'aria-label': t.q });
+  D.reasons.forEach(function (r) {
+    var b = el('button', { type: 'button', 'aria-pressed': 'false', text: r[lang], on: function () {
+      chosen = r;
+      Array.prototype.forEach.call(list.children, function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      detail.placeholder = r.hint[lang];
+      send.removeAttribute('disabled');
+    } });
+    list.appendChild(b);
+  });
+  function payload() {
+    return { ext: key || 'unknown', version: ver, lang: lang, reason: chosen ? chosen.id : '', detail: detail.value.slice(0, 1000) };
+  }
+  send.addEventListener('click', function () {
+    if (!chosen) return;
+    var p = payload();
+    if (D.action) {
+      var f = el('form', { method: 'POST', action: D.action, target: 'sink', hidden: 'hidden' });
+      Object.keys(D.fields).forEach(function (k) { var i = el('input', { type: 'hidden', name: D.fields[k] }); i.value = p[k] || ''; f.appendChild(i); });
+      document.body.appendChild(f);
+      f.submit();
+      status.textContent = t.sent;
+    } else if (D.mail) {
+      var subject = '[' + (D.brand || '') + '] ' + (tool ? tool.name.en : 'Uninstall') + ' ' + ver + ' \u2013 ' + p.reason;
+      var body = chosen[lang] + (p.detail ? '\n\n' + p.detail : '') + '\n\n(' + p.ext + ' ' + ver + ', ' + lang + ')';
+      location.href = 'mailto:' + encodeURIComponent(D.mail).replace('%40', '@') + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      status.textContent = t.sentMail;
+    }
+    send.setAttribute('disabled', 'disabled');
+    window.__byeSent = p;
+  });
+  app.appendChild(el('div', { 'class': 'card' }, [el('h2', { text: t.q }), list, detailLabel, detail,
+    el('div', { 'class': 'actions' }, [send]), status]));
+  var store = tool ? safeHttps(tool.store.chrome || tool.store.edge || tool.store.firefox || '') : '';
+  if (store) app.appendChild(el('p', { 'class': 'small' }, [t.mistake + ' ', el('a', { href: store, rel: 'noopener', text: t.reinstall })]));
+  var others = Object.keys(D.tools).filter(function (k) { return k !== key && safeHttps(D.tools[k].store.chrome || ''); });
+  if (others.length) {
+    var grid = el('div', { 'class': 'grid' });
+    others.forEach(function (k) {
+      var o = D.tools[k];
+      grid.appendChild(el('a', { href: safeHttps(o.store.chrome), rel: 'noopener' }, [el('img', { src: o.icon, alt: '' }), el('span', { text: o.name[lang] })]));
+    });
+    app.appendChild(el('section', { 'class': 'more' }, [el('h2', { text: t.more + ' ' + D.brand }), grid]));
+  }
+  app.appendChild(el('p', { 'class': 'small', style: 'margin-top:28px', text: t.privacy }));
+})();
+</script></body></html>
